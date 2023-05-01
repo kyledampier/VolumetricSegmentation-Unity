@@ -134,6 +134,8 @@ monailabel start_server --app apps/radiology --studies datasets/Task09_Spleen/im
 
 ## The MonaiLabel Class
 
+![LifeCycle](./imgs/Lifecycle.png)
+
 ### NuGet Dependencies
 
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
@@ -204,7 +206,7 @@ Console.WriteLine(response.latencies.ToString());
 
 ### `InferLocal` - Infer from Local Volume
 
-**Note** - Works best when using absolute paths.
+**Note** - Works best when using absolute paths for inputs.
 
 ```C#
 // USAGE: label.inferRemote(string model, string localInputFile, string localOutputFile) -> Task<MonaiInferResponse>
@@ -212,8 +214,19 @@ Console.WriteLine(response.latencies.ToString());
 string pathToLocalVolume = @"C:\Path\To\Local\Dir\volume.nii.gz";
 string outputFileName = "inference.nii.gz";
 
-// USAGE - label.inferRemote(model, localInputFile, localOutputFile)
 MonaiInferResponse response = await label.InferLocal("deepedit", pathToLocalVolume, outputFileName);
 Console.WriteLine("Infer Completed");
 Console.WriteLine(response.latencies.ToString());
+```
+
+### `PutDatastore` - Upload/Add Volume to Datastore
+
+**Note** - Works best when using absolute paths for inputs.
+
+```C#
+// USAGE: label.inferRemote(string imageId, string pathToVolumeFile) -> Task<MonaiDatastore>
+string pathToVolumeFile = @"C:\Path\To\Local\Dir\volume.nii.gz";
+
+MonaiDatastore datastore = await label.PutDatastore("custom_1", pathToVolumeFile);
+Console.WriteLine(datastore.ToString());
 ```

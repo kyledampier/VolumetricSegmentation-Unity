@@ -1,0 +1,2233 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "MONAILabel",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/token": {
+      "post": {
+        "tags": [ "AppService" ],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token_token_post",
+        "requestBody": {
+          "content": { "application/x-www-form-urlencoded": { "schema": { "$ref": "#/components/schemas/Body_login_for_access_token_token_post" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Token" } } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/info/": {
+      "get": {
+        "tags": [ "AppService" ],
+        "summary": "Get App Info",
+        "operationId": "api_app_info_info__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/model/{model}": {
+      "get": {
+        "tags": [ "Model" ],
+        "summary": "Download Latest Model Weights",
+        "operationId": "api_download_model_model__model__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model",
+              "type": "string"
+            },
+            "name": "model",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/model/info/{model}": {
+      "get": {
+        "tags": [ "Model" ],
+        "summary": "Get CheckSum/Details for the Latest Model File",
+        "operationId": "api_model_info_model_info__model__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model",
+              "type": "string"
+            },
+            "name": "model",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/infer/{model}": {
+      "post": {
+        "tags": [ "Infer" ],
+        "summary": "Run Inference for supported model",
+        "operationId": "api_run_inference_infer__model__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model",
+              "type": "string"
+            },
+            "name": "model",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Image",
+              "type": "string",
+              "default": ""
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Session Id",
+              "type": "string",
+              "default": ""
+            },
+            "name": "session_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/monailabel__endpoints__infer__ResultType" },
+            "name": "output",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": { "content": { "multipart/form-data": { "schema": { "$ref": "#/components/schemas/Body_api_run_inference_infer__model__post" } } } },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "{}"
+                }
+              },
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "points": {
+                      "type": "string",
+                      "description": "Reserved for future; Currently it will be empty"
+                    },
+                    "file": {
+                      "type": "string",
+                      "description": "The result NIFTI image which will have segmentation mask",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "encoding": {
+                  "points": { "contentType": "text/plain" },
+                  "file": { "contentType": "application/octet-stream" }
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/infer/wsi/{model}": {
+      "post": {
+        "tags": [ "Infer" ],
+        "summary": "Run WSI Inference for supported model",
+        "operationId": "api_run_wsi_inference_infer_wsi__model__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model",
+              "type": "string"
+            },
+            "name": "model",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Image",
+              "type": "string",
+              "default": ""
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Session Id",
+              "type": "string",
+              "default": ""
+            },
+            "name": "session_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/monailabel__endpoints__wsi_infer__ResultType" },
+            "name": "output",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Wsi",
+                "allOf": [ { "$ref": "#/components/schemas/WSIInput" } ],
+                "default": {
+                  "level": 0,
+                  "location": [ 0, 0 ],
+                  "size": [ 2048, 2048 ],
+                  "tile_size": [ 1024, 1024 ],
+                  "min_poly_area": 80,
+                  "params": {}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/infer/wsi_v2/{model}": {
+      "post": {
+        "tags": [ "Infer" ],
+        "summary": "Run WSI Inference for supported model",
+        "operationId": "api_run_wsi_v2_inference_infer_wsi_v2__model__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model",
+              "type": "string"
+            },
+            "name": "model",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Image",
+              "type": "string",
+              "default": ""
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Session Id",
+              "type": "string",
+              "default": ""
+            },
+            "name": "session_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/monailabel__endpoints__wsi_infer__ResultType" },
+            "name": "output",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": { "content": { "multipart/form-data": { "schema": { "$ref": "#/components/schemas/Body_api_run_wsi_v2_inference_infer_wsi_v2__model__post" } } } },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/batch/infer": {
+      "get": {
+        "tags": [ "Infer" ],
+        "summary": "Get Status of Batch Inference Task",
+        "operationId": "api_status_batch_infer_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "All",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "all",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Check If Running",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "check_if_running",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": [ "Infer" ],
+        "summary": "Stop Batch Inference Task",
+        "operationId": "api_stop_batch_infer_delete",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/batch/infer/{model}": {
+      "post": {
+        "tags": [ "Infer" ],
+        "summary": "Run Batch Inference Task",
+        "operationId": "api_run_batch_infer__model__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model",
+              "type": "string"
+            },
+            "name": "model",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "allOf": [ { "$ref": "#/components/schemas/BatchInferImageType" } ],
+              "default": "all"
+            },
+            "name": "images",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Run Sync",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "run_sync",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Params",
+                "type": "object",
+                "default": {
+                  "device": "cuda",
+                  "multi_gpu": true,
+                  "gpus": "all",
+                  "logging": "WARNING",
+                  "save_label": true,
+                  "label_tag": "original",
+                  "max_workers": 1,
+                  "max_batch_size": 0
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/train/": {
+      "get": {
+        "tags": [ "Train" ],
+        "summary": "Get Status of Training Task",
+        "operationId": "api_status_train__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "All",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "all",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Check If Running",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "check_if_running",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "post": {
+        "tags": [ "Train" ],
+        "summary": "Run All Training Tasks",
+        "operationId": "api_run_train__post",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Run Sync",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "run_sync",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Params",
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "deprecated": true
+      },
+      "delete": {
+        "tags": [ "Train" ],
+        "summary": "Stop Training Task",
+        "operationId": "api_stop_train__delete",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/train/{model}": {
+      "post": {
+        "tags": [ "Train" ],
+        "summary": "Run Training Task for specific model",
+        "operationId": "api_run_model_train__model__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model",
+              "type": "string"
+            },
+            "name": "model",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Run Sync",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "run_sync",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Enqueue",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "enqueue",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Params",
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/activelearning/{strategy}": {
+      "post": {
+        "tags": [ "ActiveLearning" ],
+        "summary": "Run Active Learning strategy to get next sample",
+        "operationId": "api_sample_activelearning__strategy__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Strategy",
+              "type": "string"
+            },
+            "name": "strategy",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Params",
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/scoring/": {
+      "get": {
+        "tags": [ "Scoring" ],
+        "summary": "Get Status of Scoring Task",
+        "operationId": "api_status_scoring__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "All",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "all",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Check If Running",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "check_if_running",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "post": {
+        "tags": [ "Scoring" ],
+        "summary": "Run All Scoring Tasks",
+        "operationId": "api_run_scoring__post",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Run Sync",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "run_sync",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Params",
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "deprecated": true
+      },
+      "delete": {
+        "tags": [ "Scoring" ],
+        "summary": "Stop Scoring Task",
+        "operationId": "api_stop_scoring__delete",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/scoring/{method}": {
+      "post": {
+        "tags": [ "Scoring" ],
+        "summary": "Run Scoring Task for specific method",
+        "operationId": "api_run_method_scoring__method__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Method",
+              "type": "string"
+            },
+            "name": "method",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Run Sync",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "run_sync",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Params",
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/datastore/": {
+      "get": {
+        "tags": [ "Datastore" ],
+        "summary": "Get All Images/Labels from datastore",
+        "operationId": "api_datastore_datastore__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/monailabel__endpoints__datastore__ResultType" },
+            "name": "output",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "put": {
+        "tags": [ "Datastore" ],
+        "summary": "Upload new Image",
+        "operationId": "api_add_image_datastore__put",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": { "multipart/form-data": { "schema": { "$ref": "#/components/schemas/Body_api_add_image_datastore__put" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "deprecated": true
+      },
+      "delete": {
+        "tags": [ "Datastore" ],
+        "summary": "Remove Image and corresponding labels",
+        "operationId": "api_remove_image_datastore__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": "id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/datastore/image": {
+      "get": {
+        "tags": [ "Datastore" ],
+        "summary": "Download Image",
+        "operationId": "api_download_image_datastore_image_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "put": {
+        "tags": [ "Datastore" ],
+        "summary": "Upload new Image",
+        "operationId": "api_add_image_datastore_image_put",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": { "multipart/form-data": { "schema": { "$ref": "#/components/schemas/Body_api_add_image_datastore_image_put" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": [ "Datastore" ],
+        "summary": "Remove Image and corresponding labels",
+        "operationId": "api_remove_image_datastore_image_delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": "id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "head": {
+        "tags": [ "Datastore" ],
+        "summary": "Check If Image Exists",
+        "operationId": "api_check_image_datastore_image_head",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Check Sum",
+              "type": "string"
+            },
+            "name": "check_sum",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/datastore/image/info": {
+      "get": {
+        "tags": [ "Datastore" ],
+        "summary": "Get Image Info",
+        "operationId": "api_get_image_info_datastore_image_info_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "put": {
+        "tags": [ "Datastore" ],
+        "summary": "Update Image Info",
+        "operationId": "api_put_image_info_datastore_image_info_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": { "content": { "application/x-www-form-urlencoded": { "schema": { "$ref": "#/components/schemas/Body_api_put_image_info_datastore_image_info_put" } } } },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/datastore/label": {
+      "get": {
+        "tags": [ "Datastore" ],
+        "summary": "Download Label",
+        "operationId": "api_download_label_datastore_label_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Label",
+              "type": "string"
+            },
+            "name": "label",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag",
+              "type": "string"
+            },
+            "name": "tag",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "put": {
+        "tags": [ "Datastore" ],
+        "summary": "Save Finished Label",
+        "operationId": "api_save_label_datastore_label_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Tag",
+              "type": "string",
+              "default": "final"
+            },
+            "name": "tag",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": { "multipart/form-data": { "schema": { "$ref": "#/components/schemas/Body_api_save_label_datastore_label_put" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": [ "Datastore" ],
+        "summary": "Remove Label",
+        "operationId": "api_remove_label_datastore_label_delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": "id",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag",
+              "type": "string"
+            },
+            "name": "tag",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "head": {
+        "tags": [ "Datastore" ],
+        "summary": "Check If Label Exists",
+        "operationId": "api_check_label_datastore_label_head",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Image",
+              "type": "string"
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag",
+              "type": "string"
+            },
+            "name": "tag",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/datastore/label/info": {
+      "get": {
+        "tags": [ "Datastore" ],
+        "summary": "Get Label Info",
+        "operationId": "api_get_label_info_datastore_label_info_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Label",
+              "type": "string"
+            },
+            "name": "label",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag",
+              "type": "string"
+            },
+            "name": "tag",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "put": {
+        "tags": [ "Datastore" ],
+        "summary": "Update Label Info",
+        "operationId": "api_put_label_info_datastore_label_info_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Label",
+              "type": "string"
+            },
+            "name": "label",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag",
+              "type": "string"
+            },
+            "name": "tag",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": { "content": { "application/x-www-form-urlencoded": { "schema": { "$ref": "#/components/schemas/Body_api_put_label_info_datastore_label_info_put" } } } },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/datastore/updatelabelinfo": {
+      "put": {
+        "tags": [ "Datastore" ],
+        "summary": "Update label info",
+        "operationId": "api_update_label_info_datastore_updatelabelinfo_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Label",
+              "type": "string"
+            },
+            "name": "label",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag",
+              "type": "string"
+            },
+            "name": "tag",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": { "content": { "application/x-www-form-urlencoded": { "schema": { "$ref": "#/components/schemas/Body_api_update_label_info_datastore_updatelabelinfo_put" } } } },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/datastore/dataset": {
+      "get": {
+        "tags": [ "Datastore" ],
+        "summary": "Download full dataset as ZIP archive",
+        "operationId": "api_download_dataset_datastore_dataset_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit Cases",
+              "type": "integer"
+            },
+            "name": "limit_cases",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/logs/": {
+      "get": {
+        "tags": [ "Others" ],
+        "summary": "Get Logs",
+        "operationId": "api_get_logs_logs__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Lines",
+              "type": "integer",
+              "default": 300
+            },
+            "name": "lines",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Html",
+              "type": "boolean",
+              "default": true
+            },
+            "name": "html",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Text",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "text",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Refresh",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "refresh",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/logs/gpu": {
+      "get": {
+        "tags": [ "Others" ],
+        "summary": "Get GPU Info (nvidia-smi)",
+        "operationId": "gpu_info_logs_gpu_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/session/{session_id}": {
+      "get": {
+        "tags": [ "Session" ],
+        "summary": "Get Session ID",
+        "operationId": "api_get_session_session__session_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            },
+            "name": "session_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Update Ts",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "update_ts",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Image",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "image",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "delete": {
+        "tags": [ "Session" ],
+        "summary": "Delete Session",
+        "operationId": "api_remove_session_session__session_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            },
+            "name": "session_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/session/": {
+      "put": {
+        "tags": [ "Session" ],
+        "summary": "Create new session with Image",
+        "operationId": "api_create_session_session__put",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Uncompress",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "uncompress",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Expiry",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "expiry",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Token",
+              "type": "string",
+              "default": ""
+            },
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": { "multipart/form-data": { "schema": { "$ref": "#/components/schemas/Body_api_create_session_session__put" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BatchInferImageType": {
+        "title": "BatchInferImageType",
+        "enum": [ "all", "labeled", "unlabeled" ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Body_api_add_image_datastore__put": {
+        "title": "Body_api_add_image_datastore__put",
+        "required": [ "file" ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "title": "Params",
+            "type": "string",
+            "default": "{}"
+          },
+          "file": {
+            "title": "File",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_api_add_image_datastore_image_put": {
+        "title": "Body_api_add_image_datastore_image_put",
+        "required": [ "file" ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "title": "Params",
+            "type": "string",
+            "default": "{}"
+          },
+          "file": {
+            "title": "File",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_api_create_session_session__put": {
+        "title": "Body_api_create_session_session__put",
+        "required": [ "files" ],
+        "type": "object",
+        "properties": {
+          "files": {
+            "title": "Files",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "Body_api_put_image_info_datastore_image_info_put": {
+        "title": "Body_api_put_image_info_datastore_image_info_put",
+        "type": "object",
+        "properties": {
+          "info": {
+            "title": "Info",
+            "type": "string",
+            "default": "{}"
+          }
+        }
+      },
+      "Body_api_put_label_info_datastore_label_info_put": {
+        "title": "Body_api_put_label_info_datastore_label_info_put",
+        "type": "object",
+        "properties": {
+          "info": {
+            "title": "Info",
+            "type": "string",
+            "default": "{}"
+          }
+        }
+      },
+      "Body_api_run_inference_infer__model__post": {
+        "title": "Body_api_run_inference_infer__model__post",
+        "type": "object",
+        "properties": {
+          "params": {
+            "title": "Params",
+            "type": "string",
+            "default": "{}"
+          },
+          "file": {
+            "title": "File",
+            "type": "string",
+            "format": "binary"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_api_run_wsi_v2_inference_infer_wsi_v2__model__post": {
+        "title": "Body_api_run_wsi_v2_inference_infer_wsi_v2__model__post",
+        "type": "object",
+        "properties": {
+          "file": {
+            "title": "File",
+            "type": "string",
+            "format": "binary"
+          },
+          "wsi": {
+            "title": "Wsi",
+            "type": "string",
+            "default": "{\"level\": 0, \"location\": [0, 0], \"size\": [2048, 2048], \"tile_size\": [1024, 1024], \"min_poly_area\": 80, \"params\": {}}"
+          }
+        }
+      },
+      "Body_api_save_label_datastore_label_put": {
+        "title": "Body_api_save_label_datastore_label_put",
+        "required": [ "label" ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "title": "Params",
+            "type": "string",
+            "default": "{}"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_api_update_label_info_datastore_updatelabelinfo_put": {
+        "title": "Body_api_update_label_info_datastore_updatelabelinfo_put",
+        "type": "object",
+        "properties": {
+          "params": {
+            "title": "Params",
+            "type": "string",
+            "default": "{}"
+          }
+        }
+      },
+      "Body_login_for_access_token_token_post": {
+        "title": "Body_login_for_access_token_token_post",
+        "required": [ "username", "password" ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ValidationError" }
+          }
+        }
+      },
+      "Token": {
+        "title": "Token",
+        "required": [ "access_token", "token_type" ],
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "token_type": {
+            "title": "Token Type",
+            "type": "string"
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [ "loc", "msg", "type" ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                { "type": "string" },
+                { "type": "integer" }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "WSIInput": {
+        "title": "WSIInput",
+        "type": "object",
+        "properties": {
+          "level": {
+            "title": "Resolution Level",
+            "type": "integer",
+            "default": 0
+          },
+          "location": {
+            "title": "Location of Region",
+            "type": "array",
+            "items": { "type": "integer" },
+            "default": [ 0, 0 ]
+          },
+          "size": {
+            "title": "Size of Region",
+            "type": "array",
+            "items": { "type": "integer" },
+            "default": [ 2048, 2048 ]
+          },
+          "tile_size": {
+            "title": "Tile size",
+            "type": "array",
+            "items": { "type": "integer" },
+            "default": [ 1024, 1024 ]
+          },
+          "min_poly_area": {
+            "title": "Min Area to filter mask polygons",
+            "type": "integer",
+            "default": 80
+          },
+          "params": {
+            "title": "Additional Params",
+            "type": "object",
+            "default": {}
+          }
+        }
+      },
+      "monailabel__endpoints__datastore__ResultType": {
+        "title": "ResultType",
+        "enum": [ "train", "stats", "all" ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "monailabel__endpoints__infer__ResultType": {
+        "title": "ResultType",
+        "enum": [ "image", "json", "all" ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "monailabel__endpoints__wsi_infer__ResultType": {
+        "title": "ResultType",
+        "enum": [ "asap", "dsa", "json" ],
+        "type": "string",
+        "description": "An enumeration."
+      }
+    }
+  }
+}

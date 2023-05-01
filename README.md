@@ -134,6 +134,15 @@ monailabel start_server --app apps/radiology --studies datasets/Task09_Spleen/im
 
 ## The MonaiLabel Class
 
+### NuGet Dependencies
+
+- [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
+  - More than 3.1 Billion Downloads
+- [Microsoft.AspNet.WebApi.Client](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client/)
+  - More than 397.5 Million Downloads
+
+![NuGet Dependencies: Microsoft.AspNet.WebApi.Client and Newtonsoft.Json](./imgs/NuGet-Dependencies.png)
+
 ### Define MonaiLabel Variable
 
 ```C#

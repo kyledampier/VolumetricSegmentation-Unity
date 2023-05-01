@@ -40,18 +40,12 @@ namespace MonaiUnity
                 Console.WriteLine(datastore.ToString());
 
                 //// --- INFER REMOTE ---
-                //// 
-
-                //// USAGE - label.inferRemote(model, imageId, outputFile)
                 //MonaiInferResponse response = await label.InferRemote("deepedit", "spleen_3", "spleen_3-label.nii.gz");
                 //Console.WriteLine("Infer Completed");
                 //Console.WriteLine(response.latencies.ToString());
 
                 // --- INFER LOCAL ---
-                // Outputs resulting nii.gz file to [label.SaveDir]/[outputFile]
                 string pathToLocalFile = @"C:\Users\kyle\Documents\GitHub\VolumetricSegmentation-Unity\test\spleen_12.nii.gz";
-
-                // USAGE - label.inferRemote(model, localInputFile, localOutputFile)
                 MonaiInferResponse response = await label.InferLocal("deepedit", pathToLocalFile, "local_labels.nii.gz");
                 Console.WriteLine("Infer Completed");
                 Console.WriteLine(response.latencies.ToString());
